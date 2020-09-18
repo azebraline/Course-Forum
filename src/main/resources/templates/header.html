@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<header th:fragment="nav">
+  <link rel="stylesheet" th:href="@{/static/assets/css/main.css}">
+
+  <script src="/webjars/jquery/3.0.0/jquery.min.js" type="text/javascript"></script>
+  <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+        crossorigin="anonymous">
+  <script src="/webjars/bootstrap/4.3.1/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top navbg">
+    <a id="logo" class="navbar-brand" href="/">Course Rating</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/">主页 <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item dropdown">
+          <!--/*@thymesVar id="userDetail" type="org.springframework.security.core.userdetails.UserDetails"*/-->
+          <a th:if="${session.userDetail}==null or ${session.userDetail.username}!='admin'"
+             class="nav-link"
+             href="/teacher">老师信息</a>
+          <span th:if="${session.userDetail}!=null and ${session.userDetail.username}=='admin'">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+             aria-haspopup="true" aria-expanded="false">老师管理</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/teacher">查看老师</a>
+            <a class="dropdown-item" href="/teacher/new">新建老师</a>
+          </div>
+          </span>
+        </li>
+        <li class="nav-item dropdown">
+          <!--/*@thymesVar id="userDetail" type="org.springframework.security.core.userdetails.UserDetails"*/-->
+          <a th:if="${session.userDetail}==null or ${session.userDetail.username}!='admin'"
+             class="nav-link"
+             href="/course">课程信息</a>
+          <span th:if="${session.userDetail}!=null and ${session.userDetail.username}=='admin'">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+             aria-haspopup="true" aria-expanded="false">课程管理</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/course">查看课程 </a>
+            <a class="dropdown-item" href="/course/new">新建课程</a>
+          </div>
+          </span>
+
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/rank">top10 课程</a>
+        </li>
+      </ul>
+      <form class="form-inline mr-5 ">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+      <form class="form-inline mt-2 mt-md-0">
+
+
+        <div th:if="${session.userDetail}!=null">
+          <div class="btn-group" role="group">
+            <button id="btnGroupDrop1" type="button" style="color:white"
+                    class="btn btn-link dropdown-toggle"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span th:text="${session.userDetail.username}"></span>
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/logout">注销</a>
+              <a class="dropdown-item "
+                 th:href="'/person/'+ ${session.userDetail.username} + '/activities'"> 我的主页</a>
+            </div>
+          </div>
+        </div>
+        <div th:if="${session.userDetail}==null">
+          <a href="signIn" class="btn btn-outline-success my-2 my-sm-0" type="button">注册</a>
+          <a href="login" class="btn btn-outline-success my-2 my-sm-0" type="submit">登录</a>
+        </div>
+
+      </form>
+    </div>
+  </nav>
+</header>
+</body>
+
+</html>

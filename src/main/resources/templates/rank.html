@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>老师信息</title>
+  <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+        crossorigin="anonymous">
+</head>
+<body>
+<div th:insert="~{header :: nav}"></div>
+<style>
+  .rank {
+    color: #929497;
+    display: inline-block;
+    float: left;
+    font-size: 30px;
+    margin-top: 29px;
+    text-align: center;
+    width: 84px;
+    line-height: 100px;
+  }
+
+  .rankBody {
+    float: left;
+  }
+
+  .rankContainer {
+    border: none;
+    border-bottom: 1px solid #ebebeb;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.24);
+    color: #666;
+    font-size: 12px;
+    padding: 20px;
+    margin: 0 auto;
+    height: 200px;
+    overflow: hidden;
+    line-height: 1.6em;
+  }
+
+  .rankIntro {
+    float: left;
+    line-height: 1.6em;
+    margin-left: 10px;
+    padding-top: 70px;
+    width: 70%;
+  }
+
+  .intro {
+    position: relative;
+    line-height: 1.6em;
+    height: 4.8em;
+    overflow: hidden;
+  }
+
+  .intro::after {
+    content: "...";
+    font-weight: bold;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 0 20px 1px 45px;
+  }
+</style>
+<div class="p-5">
+  <div class="list-group w-75 m-auto">
+    <!--/*@thymesVar id="courses" type="java.util.List"*/-->
+    <a th:each="course:${courses}" href="#"
+       class="list-group-item list-group-item-action rankContainer">
+      <span th:text="${courseStat.index}+1" class="rank align-content-center"></span>
+      <div class="rankBody">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-2" th:text="${course.name}"></h5>
+        </div>
+        <p>教师: <i style="color: red" th:text="${course.teacherName}"></i></p>
+        <button th:text="${course.vote}"
+                type="button"
+                id="testBtn"
+                class="btn btn-success glyphicon glyphicon-thumbs-up"
+        >
+        </button>
+      </div>
+      <div class=" rankIntro">
+        <p class="align-text-bottom p-1 intro" th:text="${course.introduction}"></p>
+      </div>
+    </a>
+  </div>
+
+</div>
+<div th:insert="~{footer :: copy}"></div>
+
+</body>
+</html>

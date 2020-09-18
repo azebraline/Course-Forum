@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    .timeline {
+      list-style: none;
+      padding: 20px 0 20px;
+      position: relative;
+    }
+
+    .timeline > li {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .timeline > li:before,
+    .timeline > li:after {
+      content: " ";
+      display: table;
+    }
+
+    .timeline > li:after {
+      clear: both;
+    }
+
+    .timeline > li:before,
+    .timeline > li:after {
+      content: " ";
+      display: table;
+    }
+
+    .timeline > li:after {
+      clear: both;
+    }
+
+    .timeline > li > .timeline-panel {
+      width: 100%;
+      float: left;
+      border-top: 1px solid #e5e7e8;
+      border-radius: 2px;
+      padding: 20px;
+      position: relative;
+    }
+
+  </style>
+</head>
+<body>
+<div th:insert="~{header :: nav}"></div>
+<div class="container div_divider">
+  <!-- 分割线 -->
+  <div class="row mt-5">
+    <!-- 右侧 -->
+    <div class="col-12 div_record bg-white rounded p-0 pb-4">
+      <!-- 用户信息 -->
+      <div class="jumbotron div_userinfo"
+           style="background-image:url('https://www.tutorialswebsite.com/demo/how-to-create-bootstrap-carousel-slider/images/banner1.jpg')">
+        <img class="iv_user_head img-circle"
+             src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/150/h/150"
+             style="margin-bottom:-200px">
+      </div>
+      <div
+          style="float:left;margin-left: 145px;font-size: 18px;font-weight: bold;padding: 5px;margin-top: -40px;" th:text="${session.userDetail.username} ">
+
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-9">
+      <div class="list-group div_article">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <a class="navbar-brand"
+             th:href="'/person/'+${session.userDetail.username}+'/activities/'">动态</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse"
+                  data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+                  aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-item nav-link active"
+                 th:href="'/person/'+${session.userDetail.username}+'/activities/course'">课程评价</a>
+              <a class="nav-item nav-link"
+                 th:href="'/person/'+${session.userDetail.username}+'/activities/teacher'">教师评价</a>
+              <a class="nav-item nav-link"
+                 th:href="'/person/'+${session.userDetail.username}+'/activities/vote'">点赞</a>
+            </div>
+          </div>
+        </nav>
+
+        <ul th:if="${activities}!=null" class="timeline">
+          <li th:each="activity:${activities}">
+            <div class="timeline-panel">
+              <div class="timeline-heading">
+                <div class="clearfix">
+                  <p class="float-left"><small class="text-muted">发表了动态</small></p>
+                  <p class="float-right"><small class="text-muted"
+                                                th:text="${activity.time}"></small></p>
+                </div>
+                <h4 class="timeline-title" th:text="${activity.title}"></h4>
+              </div>
+              <div class="timeline-body">
+                <p style="font-size: 15px; color: #1a1a1a" th:text="${activity.content}"></p>
+              </div>
+            </div>
+          </li>
+        </ul>
+
+        <!--/*@thymesVar id="courseComments" type="java.util.ArrayList"*/-->
+        <ul th:if="${courseComments}!=null" class="timeline">
+          <li th:each="courseComment:${courseComments}">
+            <div class="timeline-panel">
+              <div class="timeline-heading">
+                <div class="clearfix">
+                  <p class="float-left"><small class="text-muted">评论了课程</small></p>
+                  <p class="float-right"><small class="text-muted"
+                                                th:text="${courseComment.time}"></small></p>
+                </div>
+                <h4 class="timeline-title" th:text="${courseComment.coursename}"></h4>
+              </div>
+              <div class="timeline-body">
+                <p style="font-size: 15px; color: #1a1a1a" th:text="${courseComment.content}"></p>
+              </div>
+            </div>
+          </li>
+        </ul>
+
+        <ul th:if="${teacherComments}!=null" class="timeline">
+          <li th:each="teacherComment:${teacherComments}">
+            <div class="timeline-panel">
+              <div class="timeline-heading">
+                <div class="clearfix">
+                  <p class="float-left"><small class="text-muted">评价了老师</small></p>
+                  <p class="float-right"><small class="text-muted"
+                                                th:text="${teacherComment.time}"></small></p>
+                </div>
+                <h4 class="timeline-title" th:text="${teacherComment.teachername}"></h4>
+              </div>
+              <div class="timeline-body">
+                <p style="font-size: 15px; color: #1a1a1a" th:text="${teacherComment.content}"></p>
+              </div>
+            </div>
+          </li>
+        </ul>
+
+        <ul th:if="${votes}!=null" class="timeline">
+          <li th:each="vote:${votes}">
+            <div class="timeline-panel">
+              <div class="timeline-heading">
+                <div class="clearfix">
+                  <p class="float-left"><small class="text-muted">赞了课程</small></p>
+                </div>
+                <h4 class="timeline-title" th:text="${vote.coursename}"></h4>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-3 div_record  shadow-lg p-3 mb-5 bg-white rounded">
+      <div style="display: flex;">
+        <div style="flex: 1">
+          <hr>
+        </div>
+        <div style="text-align: center;line-height: 48px;color: #34374C">记录美好的心情</div>
+        <div style="flex: 1">
+          <hr>
+        </div>
+      </div>
+      <form th:action="'/person/'+${session.userDetail.username}+'/activities'" method="post">
+        <input name="title" type="text" class="form-control" placeholder="标题:美好的一天...">
+        <br>
+        <textarea class="form-control" rows="3" name="content"
+                  placeholder="内容:今天捡到一分钱！！！^_^"></textarea>
+        <br>
+        <div class="div_save">
+          <button type="submit" class="btn btn-primary btn_save_record">发表动态</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>课程信息</title>
+  <link href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+        crossorigin="anonymous">
+</head>
+<body>
+<div th:insert="~{header :: nav}"></div>
+
+<div class="container p-5">
+  <div class="md-card-text pb-5 mb-5 course-info z-depth-2">
+    <div class="subpage-header">
+      <img th:src="@{/static/assets/image/test.png}" id="img-course" class="img-circle z-depth-2"/>
+      <p class="mb-0" th:text="${course.name}"></p>
+      <small th:text="${course.teacherName}"></small>
+
+    </div>
+    <p th:text="${course.introduction}">
+    </p>
+
+    <button th:if="${voted}" th:text="${course.vote}+'已赞'"
+            class="bg-color--blue click-button"></button>
+    <form th:if="${voted==null}" action="/course/vote" method="post">
+      <input th:type="hidden" name="courseId" th:value="${course.id}">
+      <button th:text="${course.vote}+'👍'" th:type="submit"
+              class="bg-color--red click-button"></button>
+    </form>
+
+  </div>
+  <div class="w-75 m-auto panel panel-info">
+    <div class="panel-heading">
+      评论
+    </div>
+    <div id="comments" class="panel-body">
+      <form action="/course/comment/" method="post">
+
+        <input type="hidden" id="time" name="time" th:value="${new java.util.Date().getTime()}">
+        <input type="hidden" id="courseId" name="courseId" th:value="${course.id}">
+        <input type="hidden" id="username" name="username"
+               th:value="${session.userDetail.getUsername()}">
+        <textarea class="form-control" id="content" name="content" placeholder="请写下您的评论..."
+                  rows="3"></textarea>
+        <br>
+        <button type="button" th:type="submit" class="btn btn-info float-right">提交</button>
+      </form>
+      <div class="clearfix"></div>
+      <hr>
+      <ul class="media-list p-0">
+        <li th:each="courseComment:${pageInfos.getList()}" class="media">
+          <a href="#" class="float-left">
+            <img src="https://bootdey.com/img/Content/user_1.jpg" class="mr-2" alt=""
+                 style="border-radius: 50%;">
+          </a>
+          <div class="media-body">
+                                <span class="text-muted pull-right">
+                                    <small th:text="${courseComment.time}"
+                                           class="text-muted"></small>
+                                </span>
+            <strong th:text="${courseComment.username}" class="text-success"></strong>
+            <p th:text="${courseComment.content}">
+            </p>
+          </div>
+        </li>
+      </ul>
+      <!--分页-->
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item" th:if="${pageInfos.hasPreviousPage}">
+            <a class="page-link"
+               th:href="'/course/detail/'+${course.id}+'?pageNum='+${pageInfos.prePage}+'#comments'"
+               aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>
+          <li class="page-item" th:each="nums:${pageInfos.getNavigatepageNums()}"><a
+              class="page-link"
+              th:href="'/course/detail/'+${course.id}+'?pageNum='+${nums}+'#comments'"
+              th:text="${nums}"></a></li>
+          <li class="page-item" th:if="${pageInfos.hasNextPage}">
+            <a class="page-link" aria-label="Next"
+               th:href="'/course/detail/'+${course.id}+'?pageNum='+${pageInfos.nextPage}+'#comments'">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!--分页End-->
+    </div>
+  </div>
+</div>
+
+
+<div th:insert="~{footer :: copy}"></div>
+
+</body>
+</html>
