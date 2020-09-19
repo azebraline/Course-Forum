@@ -8,8 +8,6 @@ docker-compose up -d
 ```
 访问 http://localhost:8080, 将初始数据导入。
 
-2.本地安装mysql，导入初始数据。
-
 修改数据库链接相关配置，启动项目。
 ```bash
 mvn install
